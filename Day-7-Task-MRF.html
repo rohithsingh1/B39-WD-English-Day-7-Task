@@ -1,0 +1,96 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+ <title>Map-Reduce-Filter</title>  
+</head>  
+<body>  
+</body>
+<script>
+// Get all the countries from the Asia continent /region using the Filter function
+fetch('https://restcountries.com/v3.1/all')
+  .then((response) => response.json())
+  .then((data)=> data.filter((country)=>{
+    return country.region === 'Asia'
+  })).then((data)=> {
+    let countries = data.map((country)=>{
+        return country.name.common
+    }).sort((a,b)=>{
+        return a.localeCompare(b)
+    })
+    console.log(countries)
+  });
+
+// Get all the countries with a population of less than 2 lakhs using Filter function
+// fetch('https://restcountries.com/v3.1/all')
+//   .then((response) => response.json())
+//   .then((data)=> data.filter((country)=>{
+//     return country.population < 200000
+//   })).then((data)=> {
+//     let countries = data.map((country)=>{
+//         return country.name.common
+//     }).sort((a,b)=>{
+//         return a.localeCompare(b)
+//     })
+//     console.log(countries)
+//   });
+
+// Get all the countries with a population of less than 2 lakhs using Filter function
+fetch('https://restcountries.com/v3.1/all')
+  .then((response) => response.json())
+  .then((data)=> data.filter((country)=>{
+    return country.population < 200000
+  })).then((data)=> {
+    let sortedpopulationcountries = data.sort((a,b)=>{
+        return a.population - b.population
+    }).map((country)=>{
+        return country.name.common
+    })
+    console.log(sortedpopulationcountries)
+  });
+
+
+// Print the following details name, capital, flag using forEach function
+fetch('https://restcountries.com/v3.1/all')
+  .then((response) => response.json())
+  .then((data)=> data.forEach((countries_data)=>{
+    console.log(`name : ${countries_data.name.common} 
+    capital : ${countries_data.capital}
+    flags : ${countries_data.flags.png}`)
+  }));
+
+
+// Print the total population of countries using reduce function
+
+fetch('https://restcountries.com/v3.1/all')
+  .then((response) => response.json())
+  .then((data)=>{
+    let total_population = data.reduce((old,curr)=>{
+        return old + curr.population
+    },0)
+    console.log(total_population)
+  })
+
+
+// Print the country which uses US Dollars as currency.
+
+fetch('https://restcountries.com/v3.1/all')
+  .then((response) => response.json())
+  .then((data)=> data.filter((country)=>{
+    if(country.currencies?.['USD']){
+        return country.currencies['USD'].name === 'United States dollar'
+    }else{
+        return false
+    }
+  })).then((data)=> {
+    let countries = data.map((country)=>{
+        return country.name.common
+    }).sort((a,b)=>{
+        return a.localeCompare(b)
+    })
+    console.log(countries)
+  });
+
+
+
+</script>
+</html>  
